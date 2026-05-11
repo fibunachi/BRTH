@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-<title>Birthday</title>
+<title>For You</title>
 
 <style>
 *{
@@ -16,66 +16,101 @@
 
 body{
   height:100vh;
-  background:#0a0a0a;
+  overflow:hidden;
+  background:#0b0b0f;
   color:white;
+}
+
+/* soft animated background */
+.bg{
+  position:absolute;
+  width:100%;
+  height:100%;
+  background:radial-gradient(circle at 20% 20%, rgba(255,255,255,0.06), transparent 40%),
+             radial-gradient(circle at 80% 70%, rgba(255,255,255,0.04), transparent 40%);
+  animation:move 12s ease-in-out infinite alternate;
+  filter:blur(20px);
+}
+
+@keyframes move{
+  0%{transform:scale(1) translate(0,0);}
+  100%{transform:scale(1.1) translate(20px,-20px);}
+}
+
+/* ENTRY SCREEN */
+.entry{
+  position:absolute;
+  width:100%;
+  height:100%;
   display:flex;
   align-items:center;
   justify-content:center;
-  overflow:hidden;
-}
-
-/* soft ambient glow */
-.glow{
-  position:absolute;
-  width:700px;
-  height:700px;
-  background:rgba(255,255,255,0.04);
-  filter:blur(140px);
-  border-radius:50%;
-}
-
-/* container */
-.wrap{
+  flex-direction:column;
   text-align:center;
-  max-width:520px;
-  padding:20px;
-  animation:fadeIn 1.5s ease;
+  z-index:10;
 }
 
-@keyframes fadeIn{
-  from{opacity:0; transform:translateY(10px);}
-  to{opacity:1; transform:translateY(0);}
-}
-
-/* main message */
-.msg{
-  font-size:18px;
-  line-height:1.8;
-  font-weight:400;
-  color:#f2f2f2;
-  margin-bottom:18px;
-}
-
-/* italian line */
-.it{
+.entry h1{
   font-size:16px;
-  color:#b8b8b8;
-  margin-top:10px;
-  font-style:italic;
+  font-weight:400;
+  color:#ddd;
+  letter-spacing:0.5px;
 }
 
-/* small signature line */
-.sig{
-  margin-top:20px;
+.entry p{
+  margin-top:8px;
   font-size:12px;
   color:#777;
 }
 
-/* play hint */
-.tap{
-  margin-top:25px;
-  font-size:12px;
-  color:#555;
+/* MAIN */
+.main{
+  position:absolute;
+  width:100%;
+  height:100%;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  flex-direction:column;
+  padding:20px;
+}
+
+/* message animation */
+.msg{
+  font-size:18px;
+  line-height:1.8;
+  max-width:500px;
+  opacity:0;
+  transform:translateY(10px);
+  animation:fadeIn 1.8s ease forwards;
+}
+
+@keyframes fadeIn{
+  to{opacity:1; transform:translateY(0);}
+}
+
+/* italian line */
+.sub{
+  margin-top:14px;
+  font-size:14px;
+  color:#aaa;
+  font-style:italic;
+  opacity:0;
+  animation:fadeSub 2.5s 0.8s ease forwards;
+}
+
+@keyframes fadeSub{
+  to{opacity:1;}
+}
+
+/* music hint */
+.hint{
+  position:absolute;
+  bottom:30px;
+  font-size:11px;
+  color:#666;
+  opacity:0.7;
 }
 
 </style>
@@ -83,46 +118,67 @@ body{
 
 <body>
 
-<div class="glow"></div>
+<div class="bg"></div>
 
-<div class="wrap">
+<!-- ENTRY -->
+<div class="entry" id="entry">
+  <h1>tap to open</h1>
+  <p>sound will start softly</p>
+</div>
+
+<!-- MAIN -->
+<div class="main" id="main">
 
   <div class="msg">
     En güzel günleri en rahat şekilde görmen dileğiyle, nice senelere :)
   </div>
 
-  <div class="it">
-    Così fortunato ad averti nella mia vita.
+  <div class="sub">
+    for you — always
   </div>
 
-  <div class="sig">
-    —
-  </div>
-
-  <div class="tap">
-    tap anywhere for music
+  <div class="hint">
+    music playing softly
   </div>
 
 </div>
 
 <!-- AUDIO -->
 <audio id="bgm" loop>
-  <!-- seçenek: Tommy Emmanuel / Tom Misch / Tidal Wave style instrumental -->
+  <!-- önerilen: Tom Misch / Tommy Emmanuel soft instrumental -->
   <source src="music.mp3" type="audio/mpeg">
 </audio>
 
 <script>
+
+const entry = document.getElementById("entry");
+const main = document.getElementById("main");
 const audio = document.getElementById("bgm");
 
 let started = false;
 
-document.body.addEventListener("click", () => {
-  if(!started){
+entry.addEventListener("click", () => {
+
+  if(started) return;
+  started = true;
+
+  // fade entry out
+  entry.style.opacity = "0";
+  entry.style.transition = "1s ease";
+
+  setTimeout(()=>{
+
+    entry.style.display = "none";
+    main.style.display = "flex";
+
+    // start music
     audio.volume = 0.25;
     audio.play();
-    started = true;
-  }
+
+  },900);
+
 });
+
 </script>
 
 </body>
