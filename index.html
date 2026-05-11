@@ -3,114 +3,91 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
-<title>For You</title>
+<title>Gift</title>
 
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",sans-serif;
-}
-
 body{
+  margin:0;
   height:100vh;
-  overflow:hidden;
   background:#0b0b0f;
+  display:flex;
+  align-items:center;
+  justify-content:center;
   color:white;
+  font-family:-apple-system;
+  overflow:hidden;
 }
 
-/* soft animated background */
+/* background glow */
 .bg{
   position:absolute;
   width:100%;
   height:100%;
-  background:radial-gradient(circle at 20% 20%, rgba(255,255,255,0.06), transparent 40%),
-             radial-gradient(circle at 80% 70%, rgba(255,255,255,0.04), transparent 40%);
-  animation:move 12s ease-in-out infinite alternate;
-  filter:blur(20px);
+  background:radial-gradient(circle at center, rgba(255,255,255,0.06), transparent 60%);
 }
 
-@keyframes move{
-  0%{transform:scale(1) translate(0,0);}
-  100%{transform:scale(1.1) translate(20px,-20px);}
-}
-
-/* ENTRY SCREEN */
-.entry{
-  position:absolute;
-  width:100%;
-  height:100%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-direction:column;
+/* START SCREEN */
+.start{
   text-align:center;
   z-index:10;
 }
 
-.entry h1{
-  font-size:16px;
-  font-weight:400;
-  color:#ddd;
-  letter-spacing:0.5px;
+.box{
+  font-size:60px;
+  animation:float 2s infinite ease-in-out;
 }
 
-.entry p{
-  margin-top:8px;
-  font-size:12px;
-  color:#777;
+@keyframes float{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-10px);}
+}
+
+.start h1{
+  font-size:14px;
+  font-weight:400;
+  margin-top:10px;
+  color:#ccc;
+}
+
+.start p{
+  font-size:11px;
+  color:#666;
+  margin-top:6px;
 }
 
 /* MAIN */
 .main{
-  position:absolute;
-  width:100%;
-  height:100%;
   display:none;
-  align-items:center;
-  justify-content:center;
   text-align:center;
-  flex-direction:column;
   padding:20px;
+  z-index:5;
 }
 
-/* message animation */
 .msg{
   font-size:18px;
-  line-height:1.8;
-  max-width:500px;
+  line-height:1.7;
   opacity:0;
-  transform:translateY(10px);
-  animation:fadeIn 1.8s ease forwards;
+  animation:fade 2s forwards;
 }
 
-@keyframes fadeIn{
-  to{opacity:1; transform:translateY(0);}
-}
-
-/* italian line */
-.sub{
-  margin-top:14px;
-  font-size:14px;
-  color:#aaa;
-  font-style:italic;
-  opacity:0;
-  animation:fadeSub 2.5s 0.8s ease forwards;
-}
-
-@keyframes fadeSub{
+@keyframes fade{
   to{opacity:1;}
 }
 
-/* music hint */
-.hint{
+.sub{
+  margin-top:12px;
+  font-size:13px;
+  color:#aaa;
+  opacity:0;
+  animation:fade 2.5s 1s forwards;
+}
+
+/* tap effect */
+.tap{
   position:absolute;
-  bottom:30px;
+  bottom:25px;
   font-size:11px;
   color:#666;
-  opacity:0.7;
 }
 
 </style>
@@ -120,9 +97,10 @@ body{
 
 <div class="bg"></div>
 
-<!-- ENTRY -->
-<div class="entry" id="entry">
-  <h1>tap to open</h1>
+<!-- START -->
+<div class="start" id="start">
+  <div class="box">🎁</div>
+  <h1>tap to open your gift</h1>
   <p>sound will start softly</p>
 </div>
 
@@ -137,45 +115,44 @@ body{
     for you — always
   </div>
 
-  <div class="hint">
-    music playing softly
-  </div>
-
 </div>
 
+<div class="tap">music playing...</div>
+
 <!-- AUDIO -->
-<audio id="bgm" loop>
-  <!-- önerilen: Tom Misch / Tommy Emmanuel soft instrumental -->
+<audio id="audio" loop>
   <source src="music.mp3" type="audio/mpeg">
 </audio>
 
 <script>
 
-const entry = document.getElementById("entry");
+const start = document.getElementById("start");
 const main = document.getElementById("main");
-const audio = document.getElementById("bgm");
+const audio = document.getElementById("audio");
 
-let started = false;
+let done = false;
 
-entry.addEventListener("click", () => {
+start.addEventListener("click", async () => {
 
-  if(started) return;
-  started = true;
+  if(done) return;
+  done = true;
 
-  // fade entry out
-  entry.style.opacity = "0";
-  entry.style.transition = "1s ease";
+  // show main
+  start.style.opacity = "0";
+  start.style.transition = "0.8s";
 
   setTimeout(()=>{
+    start.style.display = "none";
+    main.style.display = "block";
+  },800);
 
-    entry.style.display = "none";
-    main.style.display = "flex";
-
-    // start music
+  // MUSIC FIX (important)
+  try {
     audio.volume = 0.25;
-    audio.play();
-
-  },900);
+    await audio.play();
+  } catch(e) {
+    console.log("audio blocked or missing file");
+  }
 
 });
 
