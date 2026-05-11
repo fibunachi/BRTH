@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
-<title>Birthday Experience</title>
+<title>Alignment</title>
 
 <style>
 *{
@@ -16,16 +16,16 @@
 }
 
 body{
-  background:#0a0a0a;
-  color:white;
   height:100vh;
   overflow:hidden;
+  background:#0a0a0a;
+  color:#fff;
   display:flex;
   align-items:center;
   justify-content:center;
 }
 
-/* SOFT LIGHT */
+/* glow */
 .glow{
   position:absolute;
   width:600px;
@@ -45,17 +45,13 @@ body{
 .year{
   font-size:110px;
   font-weight:600;
-  letter-spacing:-4px;
-  transition:0.8s ease;
-}
-
-.break{
+  letter-spacing:-5px;
   animation:break 1.2s forwards;
 }
 
 @keyframes break{
-  0%{transform:scale(1) rotate(0);}
-  50%{transform:scale(1.15) rotate(-6deg);}
+  0%{transform:scale(1);}
+  50%{transform:scale(1.2) rotate(-5deg);}
   100%{transform:scale(0.2) rotate(25deg);opacity:0;}
 }
 
@@ -76,7 +72,7 @@ body{
   color:#aaa;
   font-size:13px;
   opacity:0;
-  animation:fade 1s 2.2s forwards;
+  animation:fade 1s 2s forwards;
 }
 
 @keyframes fade{
@@ -97,17 +93,15 @@ body{
   border-radius:26px;
   padding:26px;
   backdrop-filter:blur(20px);
-  box-shadow:0 20px 60px rgba(0,0,0,0.4);
 }
 
 .question{
-  font-size:20px;
+  font-size:18px;
+  margin-bottom:18px;
+  color:#f5f5f5;
   line-height:1.4;
-  margin-bottom:22px;
-  font-weight:500;
 }
 
-/* TOUCH FRIENDLY */
 .answers{
   display:flex;
   flex-direction:column;
@@ -115,29 +109,28 @@ body{
 }
 
 button{
-  padding:15px;
-  border-radius:16px;
+  padding:14px;
+  border-radius:14px;
   border:none;
   background:rgba(255,255,255,0.08);
   color:white;
-  font-size:15px;
+  font-size:14px;
   transition:0.25s ease;
-  touch-action:manipulation;
+  cursor:pointer;
 }
 
 button:active{
   transform:scale(0.97);
 }
 
+button:hover{
+  background:rgba(255,255,255,0.15);
+}
+
 .correct{
   background:white;
   color:black;
   font-weight:600;
-}
-
-/* subtle mobile hover replacement */
-button:hover{
-  background:rgba(255,255,255,0.15);
 }
 
 /* ===== FINAL ===== */
@@ -150,14 +143,14 @@ button:hover{
 }
 
 .final h1{
-  font-size:26px;
-  margin-bottom:12px;
+  font-size:22px;
   font-weight:600;
+  margin-bottom:12px;
 }
 
 .final p{
-  color:#b5b5b5;
-  font-size:15px;
+  color:#bbb;
+  font-size:14px;
   line-height:1.7;
 }
 
@@ -182,11 +175,9 @@ button:hover{
 <!-- INTRO -->
 <div class="intro" id="intro">
 
-  <div class="year break" id="y23">23</div>
-
+  <div class="year">23</div>
   <div class="newYear">24</div>
-
-  <div class="subtitle">a small reflection of you...</div>
+  <div class="subtitle">alignment initializing...</div>
 
 </div>
 
@@ -196,7 +187,6 @@ button:hover{
   <div class="card">
 
     <div class="question" id="q"></div>
-
     <div class="answers" id="a"></div>
 
   </div>
@@ -211,8 +201,8 @@ button:hover{
   <h1>İyi ki doğdun</h1>
 
   <p>
-    Sana en sakin, en iyi hissedeceğin bir yıl diliyorum.<br><br>
-    I noticed the way you move through everything.
+    En güzel günleri en iyi şekilde görmen dileğiyle,<br>
+    nice senelere :)
   </p>
 
 </div>
@@ -220,41 +210,50 @@ button:hover{
 <script>
 
 const data = [
+
   {
-    q:"Bugün modun hangisi?",
+    q:"Bugün seni en iyi anlatan cümle hangisi?",
     a:[
-      {t:"Quietly tired but here",c:false},
-      {t:"I’m functioning",c:true},
-      {t:"Don’t talk before americano",c:false}
+      "Sessizim ama idare ediyorum",
+      "Zihnim dolu ama sakinceyim",
+      "Bugün kimse beni zorlamasın",
+      "Kahve olmadan ben yokum"
     ]
   },
+
   {
-    q:"Enerji kaynağın?",
+    q:"Your current world feels like…",
     a:[
-      {t:"Americano + focus",c:true},
-      {t:"Music + headphones",c:false},
-      {t:"Random chaos",c:false}
+      "controlled chaos",
+      "focused silence",
+      "tired but moving",
+      "coffee-powered survival"
     ]
   },
+
   {
-    q:"Gizli karakterin?",
+    q:"Brenda vetes sot je…",
     a:[
-      {t:"Sarcastic strategist",c:true},
-      {t:"Emotionally deep observer",c:false},
-      {t:"I don’t care but I do",c:false}
+      "e qetë por e lodhur",
+      "duke menduar shumë",
+      "në kontroll",
+      "vetëm dua qetësi"
     ]
   },
+
   {
-    q:"Seni en çok ne rahatsız eder?",
+    q:"What do you need most today?",
     a:[
-      {t:"Messy spaces",c:true},
-      {t:"No personal boundaries",c:false},
-      {t:"Noise overload",c:false}
+      "peace",
+      "clarity",
+      "space",
+      "nothing, just time"
     ]
   }
+
 ];
 
-let i=0;
+let i = 0;
 
 const intro = document.getElementById("intro");
 const quiz = document.getElementById("quiz");
@@ -266,42 +265,38 @@ const a = document.getElementById("a");
 /* INTRO FLOW */
 setTimeout(()=>{
 
-  intro.style.opacity="0";
+  intro.style.opacity = "0";
 
   setTimeout(()=>{
-    intro.style.display="none";
-    quiz.style.display="block";
+    intro.style.display = "none";
+    quiz.style.display = "block";
     load();
   },900);
 
 },3200);
 
-/* LOAD QUESTIONS */
+/* LOAD */
 function load(){
 
   const item = data[i];
 
   q.innerText = item.q;
-  a.innerHTML="";
+  a.innerHTML = "";
 
-  item.a.forEach(ans=>{
+  item.a.forEach(txt=>{
 
     const b = document.createElement("button");
-    b.innerText = ans.t;
+    b.innerText = txt;
 
-    if(ans.c){
-      b.classList.add("correct");
-
-      b.ontouchstart = b.onclick = ()=>{
-        i++;
-        if(i<data.length){
-          load();
-        } else {
-          quiz.style.display="none";
-          final.style.display="block";
-        }
+    b.onclick = ()=>{
+      i++;
+      if(i < data.length){
+        load();
+      }else{
+        quiz.style.display="none";
+        final.style.display="block";
       }
-    }
+    };
 
     a.appendChild(b);
 
