@@ -1,21 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
+<meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Gift</title>
 
 <style>
-body{
+*{
   margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:-apple-system,BlinkMacSystemFont;
+}
+
+body{
   height:100vh;
   background:#0b0b0f;
+  color:white;
+  overflow:hidden;
   display:flex;
   align-items:center;
   justify-content:center;
-  color:white;
-  font-family:-apple-system;
-  overflow:hidden;
 }
 
 /* background glow */
@@ -26,15 +31,16 @@ body{
   background:radial-gradient(circle at center, rgba(255,255,255,0.06), transparent 60%);
 }
 
-/* START SCREEN */
-.start{
+/* ================= ENTRY ================= */
+
+.entry{
   text-align:center;
-  z-index:10;
+  z-index:5;
 }
 
 .box{
-  font-size:60px;
-  animation:float 2s infinite ease-in-out;
+  font-size:70px;
+  animation:float 2s ease-in-out infinite;
 }
 
 @keyframes float{
@@ -42,52 +48,82 @@ body{
   50%{transform:translateY(-10px);}
 }
 
-.start h1{
+.entry h1{
   font-size:14px;
   font-weight:400;
   margin-top:10px;
-  color:#ccc;
+  color:#ddd;
 }
 
-.start p{
+.entry p{
   font-size:11px;
   color:#666;
-  margin-top:6px;
 }
 
-/* MAIN */
-.main{
+/* ================= LOADING ================= */
+
+.loading{
   display:none;
+  font-size:16px;
   text-align:center;
-  padding:20px;
-  z-index:5;
-}
-
-.msg{
-  font-size:18px;
-  line-height:1.7;
-  opacity:0;
-  animation:fade 2s forwards;
+  animation:fade 1s forwards;
 }
 
 @keyframes fade{
+  from{opacity:0;}
   to{opacity:1;}
 }
 
-.sub{
-  margin-top:12px;
-  font-size:13px;
-  color:#aaa;
-  opacity:0;
-  animation:fade 2.5s 1s forwards;
+/* ================= YEAR TRANSITION ================= */
+
+.yearWrap{
+  display:none;
+  position:absolute;
+  font-size:90px;
+  font-weight:600;
 }
 
-/* tap effect */
-.tap{
+.digit{
   position:absolute;
-  bottom:25px;
-  font-size:11px;
-  color:#666;
+  transition:0.8s ease;
+}
+
+/* falling animation */
+.fall{
+  animation:fall 1s forwards;
+}
+
+@keyframes fall{
+  to{
+    transform:translateY(300px) rotate(60deg);
+    opacity:0;
+  }
+}
+
+/* ================= FINAL ================= */
+
+.final{
+  display:none;
+  text-align:center;
+  padding:20px;
+  max-width:500px;
+}
+
+.final h1{
+  font-size:20px;
+  margin-bottom:10px;
+}
+
+.final p{
+  font-size:14px;
+  line-height:1.7;
+  color:#ccc;
+}
+
+.small{
+  margin-top:10px;
+  font-size:12px;
+  color:#777;
 }
 
 </style>
@@ -97,64 +133,93 @@ body{
 
 <div class="bg"></div>
 
-<!-- START -->
-<div class="start" id="start">
+<!-- ENTRY -->
+<div class="entry" id="entry">
   <div class="box">🎁</div>
-  <h1>tap to open your gift</h1>
-  <p>sound will start softly</p>
+  <h1>tap to open</h1>
+  <p>birthday experience</p>
 </div>
 
-<!-- MAIN -->
-<div class="main" id="main">
+<!-- LOADING -->
+<div class="loading" id="loading">
+  birthday girl loading...
+</div>
 
-  <div class="msg">
+<!-- YEAR ANIMATION -->
+<div class="yearWrap" id="year">
+  <div class="digit" id="d1">2</div>
+  <div class="digit" id="d2" style="left:60px;">3</div>
+</div>
+
+<!-- FINAL -->
+<div class="final" id="final">
+  <h1>İyi ki doğdun</h1>
+  <p>
     En güzel günleri en rahat şekilde görmen dileğiyle, nice senelere :)
-  </div>
-
-  <div class="sub">
-    for you — always
-  </div>
-
+  </p>
+  <div class="small">—</div>
 </div>
-
-<div class="tap">music playing...</div>
-
-<!-- AUDIO -->
-<audio id="audio" loop>
-  <source src="music.mp3" type="audio/mpeg">
-</audio>
 
 <script>
 
-const start = document.getElementById("start");
-const main = document.getElementById("main");
-const audio = document.getElementById("audio");
+const entry = document.getElementById("entry");
+const loading = document.getElementById("loading");
+const year = document.getElementById("year");
+const final = document.getElementById("final");
 
-let done = false;
+const d1 = document.getElementById("d1");
+const d2 = document.getElementById("d2");
 
-start.addEventListener("click", async () => {
+entry.addEventListener("click", async ()=>{
 
-  if(done) return;
-  done = true;
+  // STEP 1: entry hide
+  entry.style.display="none";
 
-  // show main
-  start.style.opacity = "0";
-  start.style.transition = "0.8s";
+  // STEP 2: loading
+  loading.style.display="block";
 
   setTimeout(()=>{
-    start.style.display = "none";
-    main.style.display = "block";
-  },800);
 
-  // MUSIC FIX (important)
-  try {
-    audio.volume = 0.25;
-    await audio.play();
-  } catch(e) {
-    console.log("audio blocked or missing file");
-  }
+    loading.style.display="none";
+    year.style.display="block";
+
+    runAnimation();
+
+  },1500);
 
 });
+
+function runAnimation(){
+
+  // 23 → 24 illusion
+  d1.innerText="2";
+  d2.innerText="4";
+
+  // create 4 “4” digits falling
+  for(let i=0;i<4;i++){
+
+    const el=document.createElement("div");
+    el.innerText="4";
+    el.style.position="absolute";
+    el.style.left=(40 + i*20)+"px";
+    el.style.top="0px";
+    el.style.fontSize="80px";
+
+    document.body.appendChild(el);
+
+    setTimeout(()=>{
+      el.classList.add("fall");
+    },300*i);
+
+  }
+
+  // final reveal
+  setTimeout(()=>{
+    year.style.display="none";
+    final.style.display="block";
+  },2500);
+
+}
 
 </script>
 
