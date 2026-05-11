@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Gift</title>
+<title>Birthday</title>
 
 <style>
 *{
@@ -17,13 +17,13 @@ body{
   height:100vh;
   background:#0b0b0f;
   color:white;
-  overflow:hidden;
   display:flex;
   align-items:center;
   justify-content:center;
+  overflow:hidden;
 }
 
-/* background glow */
+/* soft background */
 .bg{
   position:absolute;
   width:100%;
@@ -31,16 +31,15 @@ body{
   background:radial-gradient(circle at center, rgba(255,255,255,0.06), transparent 60%);
 }
 
-/* ================= ENTRY ================= */
-
+/* ENTRY */
 .entry{
   text-align:center;
-  z-index:5;
+  z-index:10;
 }
 
-.box{
+.gift{
   font-size:70px;
-  animation:float 2s ease-in-out infinite;
+  animation:float 2s infinite ease-in-out;
 }
 
 @keyframes float{
@@ -50,80 +49,55 @@ body{
 
 .entry h1{
   font-size:14px;
-  font-weight:400;
   margin-top:10px;
   color:#ddd;
 }
 
 .entry p{
   font-size:11px;
-  color:#666;
+  color:#777;
 }
 
-/* ================= LOADING ================= */
-
-.loading{
+/* YEAR */
+.year{
   display:none;
-  font-size:16px;
-  text-align:center;
-  animation:fade 1s forwards;
-}
-
-@keyframes fade{
-  from{opacity:0;}
-  to{opacity:1;}
-}
-
-/* ================= YEAR TRANSITION ================= */
-
-.yearWrap{
-  display:none;
-  position:absolute;
-  font-size:90px;
+  font-size:110px;
   font-weight:600;
+  letter-spacing:-4px;
+  opacity:0;
+  transform:scale(0.9);
+  transition:1s ease;
 }
 
-.digit{
-  position:absolute;
-  transition:0.8s ease;
-}
-
-/* falling animation */
-.fall{
-  animation:fall 1s forwards;
-}
-
-@keyframes fall{
-  to{
-    transform:translateY(300px) rotate(60deg);
-    opacity:0;
-  }
-}
-
-/* ================= FINAL ================= */
-
+/* FINAL */
 .final{
   display:none;
   text-align:center;
+  max-width:520px;
   padding:20px;
-  max-width:500px;
+  animation:fade 1.5s ease forwards;
+}
+
+@keyframes fade{
+  from{opacity:0; transform:translateY(10px);}
+  to{opacity:1; transform:translateY(0);}
 }
 
 .final h1{
   font-size:20px;
-  margin-bottom:10px;
+  margin-bottom:12px;
 }
 
 .final p{
   font-size:14px;
-  line-height:1.7;
-  color:#ccc;
+  line-height:1.8;
+  color:#cfcfcf;
 }
 
 .small{
-  margin-top:10px;
+  margin-top:16px;
   font-size:12px;
-  color:#777;
+  color:#888;
 }
 
 </style>
@@ -135,91 +109,77 @@ body{
 
 <!-- ENTRY -->
 <div class="entry" id="entry">
-  <div class="box">🎁</div>
+  <div class="gift">🎁</div>
   <h1>tap to open</h1>
-  <p>birthday experience</p>
+  <p>a small moment for you</p>
 </div>
 
-<!-- LOADING -->
-<div class="loading" id="loading">
-  birthday girl loading...
-</div>
-
-<!-- YEAR ANIMATION -->
-<div class="yearWrap" id="year">
-  <div class="digit" id="d1">2</div>
-  <div class="digit" id="d2" style="left:60px;">3</div>
-</div>
+<!-- YEAR -->
+<div class="year" id="year">23</div>
 
 <!-- FINAL -->
 <div class="final" id="final">
+
   <h1>İyi ki doğdun</h1>
+
   <p>
     En güzel günleri en rahat şekilde görmen dileğiyle, nice senelere :)
   </p>
+
+  <p style="margin-top:14px; font-style:italic;">
+    for you, thousand years
+  </p>
+
   <div class="small">—</div>
+
 </div>
 
 <script>
 
 const entry = document.getElementById("entry");
-const loading = document.getElementById("loading");
 const year = document.getElementById("year");
 const final = document.getElementById("final");
 
-const d1 = document.getElementById("d1");
-const d2 = document.getElementById("d2");
+entry.addEventListener("click", ()=>{
 
-entry.addEventListener("click", async ()=>{
-
-  // STEP 1: entry hide
-  entry.style.display="none";
-
-  // STEP 2: loading
-  loading.style.display="block";
+  entry.style.opacity="0";
+  entry.style.transition="0.8s ease";
 
   setTimeout(()=>{
 
-    loading.style.display="none";
+    entry.style.display="none";
+
+    // STEP 1: show 23
     year.style.display="block";
+    year.style.opacity="1";
 
-    runAnimation();
+    // STEP 2: transform to 24
+    setTimeout(()=>{
 
-  },1500);
+      year.style.transform="scale(1.05)";
+      year.style.opacity="0.2";
+
+      setTimeout(()=>{
+
+        year.innerText="24";
+        year.style.opacity="1";
+        year.style.transform="scale(1)";
+
+      },600);
+
+    },1200);
+
+    // STEP 3: final message
+    setTimeout(()=>{
+
+      year.style.display="none";
+      final.style.display="block";
+
+    },2600);
+
+  },800);
 
 });
-
-function runAnimation(){
-
-  // 23 → 24 illusion
-  d1.innerText="2";
-  d2.innerText="4";
-
-  // create 4 “4” digits falling
-  for(let i=0;i<4;i++){
-
-    const el=document.createElement("div");
-    el.innerText="4";
-    el.style.position="absolute";
-    el.style.left=(40 + i*20)+"px";
-    el.style.top="0px";
-    el.style.fontSize="80px";
-
-    document.body.appendChild(el);
-
-    setTimeout(()=>{
-      el.classList.add("fall");
-    },300*i);
-
-  }
-
-  // final reveal
-  setTimeout(()=>{
-    year.style.display="none";
-    final.style.display="block";
-  },2500);
-
-}
 
 </script>
 
