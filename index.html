@@ -19,23 +19,24 @@ body{
   height:100vh;
   background:#0a0a0a;
   color:white;
+  overflow:hidden;
   display:flex;
   align-items:center;
   justify-content:center;
-  overflow:hidden;
 }
 
-/* glow */
+/* soft glow */
 .glow{
   position:absolute;
-  width:600px;
-  height:600px;
+  width:650px;
+  height:650px;
   background:rgba(255,255,255,0.04);
-  filter:blur(120px);
+  filter:blur(130px);
   border-radius:50%;
 }
 
-/* INTRO */
+/* ================= INTRO ================= */
+
 .intro{
   text-align:center;
 }
@@ -43,6 +44,7 @@ body{
 .year{
   font-size:110px;
   font-weight:600;
+  letter-spacing:-4px;
   animation:break 1.2s forwards;
 }
 
@@ -54,6 +56,7 @@ body{
 
 .newYear{
   font-size:110px;
+  font-weight:600;
   opacity:0;
   animation:appear 1.2s 1.1s forwards;
 }
@@ -67,32 +70,39 @@ body{
   color:#aaa;
   font-size:13px;
   opacity:0;
-  animation:fade 1s 2s forwards;
+  animation:fade 1s 2.2s forwards;
 }
 
 @keyframes fade{
   to{opacity:1;}
 }
 
-/* QUIZ */
+/* ================= QUIZ ================= */
+
 .quiz{
   display:none;
   width:90%;
   max-width:420px;
+  transition:0.4s;
 }
 
 .card{
   background:rgba(255,255,255,0.06);
   border:1px solid rgba(255,255,255,0.12);
-  border-radius:24px;
+  border-radius:26px;
   padding:24px;
   backdrop-filter:blur(20px);
+  animation:fadeIn 0.6s ease;
+}
+
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(10px);}
+  to{opacity:1; transform:translateY(0);}
 }
 
 .question{
   font-size:18px;
   margin-bottom:16px;
-  line-height:1.4;
 }
 
 .answers{
@@ -108,7 +118,6 @@ button{
   background:rgba(255,255,255,0.08);
   color:white;
   font-size:14px;
-  cursor:pointer;
   transition:0.2s;
 }
 
@@ -116,23 +125,16 @@ button:active{
   transform:scale(0.97);
 }
 
-/* LOADING */
+/* ================= LOADING ================= */
+
 .loading{
   display:none;
-  text-align:center;
+  font-size:14px;
+  color:#aaa;
 }
 
-.dot{
-  display:inline-block;
-  animation:blink 1s infinite;
-}
+/* ================= RESULT ================= */
 
-@keyframes blink{
-  0%,100%{opacity:0.2;}
-  50%{opacity:1;}
-}
-
-/* RESULT */
 .result{
   display:none;
   text-align:center;
@@ -141,7 +143,7 @@ button:active{
 }
 
 h1{
-  font-size:20px;
+  font-size:22px;
   margin-bottom:10px;
 }
 
@@ -149,24 +151,69 @@ p{
   color:#bbb;
   font-size:14px;
   line-height:1.6;
-  margin-bottom:15px;
 }
 
+/* profile box */
 .box{
+  margin-top:14px;
   background:rgba(255,255,255,0.06);
-  padding:15px;
+  padding:14px;
   border-radius:16px;
-  margin-top:10px;
   text-align:left;
   font-size:13px;
-  color:#ddd;
+}
+
+/* ================= REVEAL IMAGE ================= */
+
+.reveal{
+  display:none;
+  text-align:center;
+  width:90%;
+  max-width:420px;
+}
+
+.photo{
+  width:180px;
+  height:180px;
+  border-radius:20px;
+  background:rgba(255,255,255,0.08);
+  margin:0 auto 18px auto;
+  overflow:hidden;
+  position:relative;
+}
+
+/* placeholder “before/after” feel */
+.photo::before{
+  content:"";
+  position:absolute;
+  width:100%;
+  height:100%;
+  background:linear-gradient(120deg,rgba(255,255,255,0.15),transparent);
+  animation:shine 2s infinite;
+}
+
+@keyframes shine{
+  0%{transform:translateX(-100%);}
+  100%{transform:translateX(100%);}
+}
+
+.glasses{
+  font-size:38px;
+  margin-bottom:10px;
+  animation:float 3s infinite ease-in-out;
+}
+
+@keyframes float{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-6px);}
 }
 
 .small{
-  color:#888;
   font-size:12px;
-  margin-top:10px;
+  color:#888;
+  margin-top:8px;
 }
+
 </style>
 </head>
 
@@ -178,7 +225,7 @@ p{
 <div class="intro" id="intro">
   <div class="year">23</div>
   <div class="newYear">24</div>
-  <div class="subtitle">alignment initializing...</div>
+  <div class="subtitle">alignment starting...</div>
 </div>
 
 <!-- QUIZ -->
@@ -191,45 +238,43 @@ p{
 
 <!-- LOADING -->
 <div class="loading" id="loading">
-  aligning responses<span class="dot">...</span>
+  aligning responses...
 </div>
 
 <!-- RESULT -->
 <div class="result" id="result">
 
-  <h1>İyi ki doğdun</h1>
+  <h1>Alignment detected</h1>
 
   <p>
     En güzel günleri en rahat şekilde görebileceğin bir yıl diliyorum, nice senelere :)
   </p>
 
-  <div class="box">
-    <b>Your pattern</b><br>
-    <div id="you"></div>
-  </div>
+  <div class="box" id="profileBox"></div>
 
-  <div class="box">
-    <b>Detected alignment</b><br>
-    <div id="match"></div>
-  </div>
+</div>
 
-  <div class="small">
-    system: emotional alignment detected
-  </div>
+<!-- REVEAL -->
+<div class="reveal" id="reveal">
+
+  <div class="glasses">👓</div>
+
+  <div class="photo"></div>
+
+  <h1>New perspective unlocked</h1>
+
+  <p class="small">
+    same person — clearer view
+  </p>
 
 </div>
 
 <script>
 
-const questions = [
+const data = [
   {
     q:"Bugün seni en iyi anlatan cümle hangisi?",
-    map:{
-      0:"calm_tired",
-      1:"thinking_silent",
-      2:"protected_space",
-      3:"coffee_mode"
-    },
+    map:["calm","thoughtful","space","coffee"],
     a:[
       "Sessizim ama idare ediyorum",
       "Zihnim dolu ama sakinceyim",
@@ -239,12 +284,7 @@ const questions = [
   },
   {
     q:"Your current world feels like…",
-    map:{
-      0:"focus_silence",
-      1:"balanced_control",
-      2:"tired_flow",
-      3:"coffee_survival"
-    },
+    map:["focus","balanced","tired","survival"],
     a:[
       "controlled chaos",
       "focused silence",
@@ -254,12 +294,7 @@ const questions = [
   },
   {
     q:"Brenda vetes sot je…",
-    map:{
-      0:"calm_tired",
-      1:"deep_thinker",
-      2:"in_control",
-      3:"need_space"
-    },
+    map:["calm","deep","control","space"],
     a:[
       "e qetë por e lodhur",
       "duke menduar shumë",
@@ -269,12 +304,7 @@ const questions = [
   },
   {
     q:"What do you need most today?",
-    map:{
-      0:"peace",
-      1:"clarity",
-      2:"space",
-      3:"rest_flow"
-    },
+    map:["peace","clarity","space","rest"],
     a:[
       "peace",
       "clarity",
@@ -285,41 +315,42 @@ const questions = [
 ];
 
 let i=0;
-let profile = [];
+let profile=[];
 
-const intro = document.getElementById("intro");
-const quiz = document.getElementById("quiz");
-const loading = document.getElementById("loading");
-const result = document.getElementById("result");
+const intro=document.getElementById("intro");
+const quiz=document.getElementById("quiz");
+const loading=document.getElementById("loading");
+const result=document.getElementById("result");
+const reveal=document.getElementById("reveal");
 
-const q = document.getElementById("q");
-const a = document.getElementById("a");
+const q=document.getElementById("q");
+const a=document.getElementById("a");
+const profileBox=document.getElementById("profileBox");
 
-const you = document.getElementById("you");
-const match = document.getElementById("match");
-
-/* intro */
+/* INTRO */
 setTimeout(()=>{
-  intro.style.display="none";
-  quiz.style.display="block";
-  load();
+  intro.style.opacity="0";
+  setTimeout(()=>{
+    intro.style.display="none";
+    quiz.style.display="block";
+    load();
+  },800);
 },3200);
 
+/* LOAD */
 function load(){
-  const item = questions[i];
-  q.innerText = item.q;
+  const item=data[i];
+  q.innerText=item.q;
   a.innerHTML="";
 
   item.a.forEach((txt,idx)=>{
+    const b=document.createElement("button");
+    b.innerText=txt;
 
-    const b = document.createElement("button");
-    b.innerText = txt;
-
-    b.onclick = ()=>{
+    b.onclick=()=>{
       profile.push(item.map[idx]);
       i++;
-
-      if(i < questions.length){
+      if(i<data.length){
         load();
       }else{
         finish();
@@ -330,6 +361,7 @@ function load(){
   });
 }
 
+/* FINISH */
 function finish(){
 
   quiz.style.display="none";
@@ -340,19 +372,14 @@ function finish(){
     loading.style.display="none";
     result.style.display="block";
 
-    const counts = {};
-    profile.forEach(p=>{
-      counts[p] = (counts[p]||0)+1;
-    });
+    profileBox.innerHTML = profile.map(p=>"• "+p).join("<br>");
 
-    const sorted = Object.entries(counts)
-      .sort((a,b)=>b[1]-a[1])
-      .map(x=>x[0]);
+    setTimeout(()=>{
+      result.style.display="none";
+      reveal.style.display="block";
+    },2500);
 
-    you.innerHTML = sorted.join("<br>");
-    match.innerHTML = "same frequency detected";
-
-  },2000);
+  },1800);
 }
 
 </script>
