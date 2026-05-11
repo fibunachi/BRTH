@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-<title>Alignment</title>
+<title>Birthday</title>
 
 <style>
 *{
@@ -12,87 +12,34 @@
   padding:0;
   box-sizing:border-box;
   font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",sans-serif;
-  -webkit-tap-highlight-color: transparent;
 }
 
 body{
   height:100vh;
   background:#0a0a0a;
   color:white;
-  overflow:hidden;
   display:flex;
   align-items:center;
   justify-content:center;
+  overflow:hidden;
 }
 
-/* soft glow */
+/* soft ambient glow */
 .glow{
   position:absolute;
-  width:650px;
-  height:650px;
+  width:700px;
+  height:700px;
   background:rgba(255,255,255,0.04);
-  filter:blur(130px);
+  filter:blur(140px);
   border-radius:50%;
 }
 
-/* ================= INTRO ================= */
-
-.intro{
+/* container */
+.wrap{
   text-align:center;
-}
-
-.year{
-  font-size:110px;
-  font-weight:600;
-  letter-spacing:-4px;
-  animation:break 1.2s forwards;
-}
-
-@keyframes break{
-  0%{transform:scale(1);}
-  50%{transform:scale(1.2) rotate(-5deg);}
-  100%{transform:scale(0.2) rotate(20deg);opacity:0;}
-}
-
-.newYear{
-  font-size:110px;
-  font-weight:600;
-  opacity:0;
-  animation:appear 1.2s 1.1s forwards;
-}
-
-@keyframes appear{
-  to{opacity:1;transform:scale(1);}
-}
-
-.subtitle{
-  margin-top:10px;
-  color:#aaa;
-  font-size:13px;
-  opacity:0;
-  animation:fade 1s 2.2s forwards;
-}
-
-@keyframes fade{
-  to{opacity:1;}
-}
-
-/* ================= QUIZ ================= */
-
-.quiz{
-  display:none;
-  width:90%;
-  max-width:420px;
-  transition:0.4s;
-}
-
-.card{
-  background:rgba(255,255,255,0.06);
-  border:1px solid rgba(255,255,255,0.12);
-  border-radius:26px;
-  padding:24px;
-  backdrop-filter:blur(20px);
-  animation:fadeIn 0.6s ease;
+  max-width:520px;
+  padding:20px;
+  animation:fadeIn 1.5s ease;
 }
 
 @keyframes fadeIn{
@@ -100,118 +47,35 @@ body{
   to{opacity:1; transform:translateY(0);}
 }
 
-.question{
+/* main message */
+.msg{
   font-size:18px;
-  margin-bottom:16px;
+  line-height:1.8;
+  font-weight:400;
+  color:#f2f2f2;
+  margin-bottom:18px;
 }
 
-.answers{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
+/* italian line */
+.it{
+  font-size:16px;
+  color:#b8b8b8;
+  margin-top:10px;
+  font-style:italic;
 }
 
-button{
-  padding:14px;
-  border:none;
-  border-radius:14px;
-  background:rgba(255,255,255,0.08);
-  color:white;
-  font-size:14px;
-  transition:0.2s;
-}
-
-button:active{
-  transform:scale(0.97);
-}
-
-/* ================= LOADING ================= */
-
-.loading{
-  display:none;
-  font-size:14px;
-  color:#aaa;
-}
-
-/* ================= RESULT ================= */
-
-.result{
-  display:none;
-  text-align:center;
-  width:90%;
-  max-width:420px;
-}
-
-h1{
-  font-size:22px;
-  margin-bottom:10px;
-}
-
-p{
-  color:#bbb;
-  font-size:14px;
-  line-height:1.6;
-}
-
-/* profile box */
-.box{
-  margin-top:14px;
-  background:rgba(255,255,255,0.06);
-  padding:14px;
-  border-radius:16px;
-  text-align:left;
-  font-size:13px;
-}
-
-/* ================= REVEAL IMAGE ================= */
-
-.reveal{
-  display:none;
-  text-align:center;
-  width:90%;
-  max-width:420px;
-}
-
-.photo{
-  width:180px;
-  height:180px;
-  border-radius:20px;
-  background:rgba(255,255,255,0.08);
-  margin:0 auto 18px auto;
-  overflow:hidden;
-  position:relative;
-}
-
-/* placeholder “before/after” feel */
-.photo::before{
-  content:"";
-  position:absolute;
-  width:100%;
-  height:100%;
-  background:linear-gradient(120deg,rgba(255,255,255,0.15),transparent);
-  animation:shine 2s infinite;
-}
-
-@keyframes shine{
-  0%{transform:translateX(-100%);}
-  100%{transform:translateX(100%);}
-}
-
-.glasses{
-  font-size:38px;
-  margin-bottom:10px;
-  animation:float 3s infinite ease-in-out;
-}
-
-@keyframes float{
-  0%,100%{transform:translateY(0);}
-  50%{transform:translateY(-6px);}
-}
-
-.small{
+/* small signature line */
+.sig{
+  margin-top:20px;
   font-size:12px;
-  color:#888;
-  margin-top:8px;
+  color:#777;
+}
+
+/* play hint */
+.tap{
+  margin-top:25px;
+  font-size:12px;
+  color:#555;
 }
 
 </style>
@@ -221,167 +85,44 @@ p{
 
 <div class="glow"></div>
 
-<!-- INTRO -->
-<div class="intro" id="intro">
-  <div class="year">23</div>
-  <div class="newYear">24</div>
-  <div class="subtitle">alignment starting...</div>
-</div>
+<div class="wrap">
 
-<!-- QUIZ -->
-<div class="quiz" id="quiz">
-  <div class="card">
-    <div class="question" id="q"></div>
-    <div class="answers" id="a"></div>
+  <div class="msg">
+    En güzel günleri en rahat şekilde görmen dileğiyle, nice senelere :)
   </div>
-</div>
 
-<!-- LOADING -->
-<div class="loading" id="loading">
-  aligning responses...
-</div>
+  <div class="it">
+    Così fortunato ad averti nella mia vita.
+  </div>
 
-<!-- RESULT -->
-<div class="result" id="result">
+  <div class="sig">
+    —
+  </div>
 
-  <h1>Alignment detected</h1>
-
-  <p>
-    En güzel günleri en rahat şekilde görebileceğin bir yıl diliyorum, nice senelere :)
-  </p>
-
-  <div class="box" id="profileBox"></div>
+  <div class="tap">
+    tap anywhere for music
+  </div>
 
 </div>
 
-<!-- REVEAL -->
-<div class="reveal" id="reveal">
-
-  <div class="glasses">👓</div>
-
-  <div class="photo"></div>
-
-  <h1>New perspective unlocked</h1>
-
-  <p class="small">
-    same person — clearer view
-  </p>
-
-</div>
+<!-- AUDIO -->
+<audio id="bgm" loop>
+  <!-- seçenek: Tommy Emmanuel / Tom Misch / Tidal Wave style instrumental -->
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
 
 <script>
+const audio = document.getElementById("bgm");
 
-const data = [
-  {
-    q:"Bugün seni en iyi anlatan cümle hangisi?",
-    map:["calm","thoughtful","space","coffee"],
-    a:[
-      "Sessizim ama idare ediyorum",
-      "Zihnim dolu ama sakinceyim",
-      "Bugün kimse beni zorlamasın",
-      "Kahve olmadan ben yokum"
-    ]
-  },
-  {
-    q:"Your current world feels like…",
-    map:["focus","balanced","tired","survival"],
-    a:[
-      "controlled chaos",
-      "focused silence",
-      "tired but moving",
-      "coffee-powered survival"
-    ]
-  },
-  {
-    q:"Brenda vetes sot je…",
-    map:["calm","deep","control","space"],
-    a:[
-      "e qetë por e lodhur",
-      "duke menduar shumë",
-      "në kontroll",
-      "vetëm dua qetësi"
-    ]
-  },
-  {
-    q:"What do you need most today?",
-    map:["peace","clarity","space","rest"],
-    a:[
-      "peace",
-      "clarity",
-      "space",
-      "nothing, just time"
-    ]
+let started = false;
+
+document.body.addEventListener("click", () => {
+  if(!started){
+    audio.volume = 0.25;
+    audio.play();
+    started = true;
   }
-];
-
-let i=0;
-let profile=[];
-
-const intro=document.getElementById("intro");
-const quiz=document.getElementById("quiz");
-const loading=document.getElementById("loading");
-const result=document.getElementById("result");
-const reveal=document.getElementById("reveal");
-
-const q=document.getElementById("q");
-const a=document.getElementById("a");
-const profileBox=document.getElementById("profileBox");
-
-/* INTRO */
-setTimeout(()=>{
-  intro.style.opacity="0";
-  setTimeout(()=>{
-    intro.style.display="none";
-    quiz.style.display="block";
-    load();
-  },800);
-},3200);
-
-/* LOAD */
-function load(){
-  const item=data[i];
-  q.innerText=item.q;
-  a.innerHTML="";
-
-  item.a.forEach((txt,idx)=>{
-    const b=document.createElement("button");
-    b.innerText=txt;
-
-    b.onclick=()=>{
-      profile.push(item.map[idx]);
-      i++;
-      if(i<data.length){
-        load();
-      }else{
-        finish();
-      }
-    };
-
-    a.appendChild(b);
-  });
-}
-
-/* FINISH */
-function finish(){
-
-  quiz.style.display="none";
-  loading.style.display="block";
-
-  setTimeout(()=>{
-
-    loading.style.display="none";
-    result.style.display="block";
-
-    profileBox.innerHTML = profile.map(p=>"• "+p).join("<br>");
-
-    setTimeout(()=>{
-      result.style.display="none";
-      reveal.style.display="block";
-    },2500);
-
-  },1800);
-}
-
+});
 </script>
 
 </body>
