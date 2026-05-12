@@ -15,48 +15,49 @@
   font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",sans-serif;
 }
 
-body{
+html,body{
+  width:100%;
+  height:100%;
   background:#070709;
   color:white;
-  height:100vh;
   overflow:hidden;
-  display:flex;
-  align-items:center;
-  justify-content:center;
 }
 
 /* ================= BACKGROUND ================= */
 
 .bg{
-  position:absolute;
-  width:120%;
-  height:120%;
+  position:fixed;
+  inset:0;
+
   background:
     radial-gradient(circle at 20% 20%, rgba(255,255,255,0.08), transparent 25%),
-    radial-gradient(circle at 80% 70%, rgba(255,255,255,0.06), transparent 30%),
+    radial-gradient(circle at 80% 70%, rgba(255,255,255,0.05), transparent 30%),
     radial-gradient(circle at center, rgba(120,120,255,0.08), transparent 40%);
+
   filter:blur(30px);
+
   animation:bgMove 12s ease-in-out infinite alternate;
 }
 
 @keyframes bgMove{
   0%{
-    transform:scale(1) translate(0px,0px);
+    transform:scale(1);
   }
   100%{
-    transform:scale(1.08) translate(-20px,-20px);
+    transform:scale(1.08) translate(-10px,-10px);
   }
 }
 
-/* particles */
+/* ================= PARTICLES ================= */
 
 .particle{
-  position:absolute;
+  position:fixed;
   width:2px;
   height:2px;
   background:white;
   border-radius:50%;
-  opacity:0.2;
+  opacity:0.25;
+
   animation:float linear infinite;
 }
 
@@ -65,8 +66,30 @@ body{
     transform:translateY(100vh);
   }
   to{
-    transform:translateY(-100vh);
+    transform:translateY(-120vh);
   }
+}
+
+/* ================= WRAPPER ================= */
+
+.wrapper{
+  position:relative;
+  width:100%;
+  height:100%;
+  overflow-y:auto;
+
+  -webkit-overflow-scrolling:touch;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  padding:20px;
+}
+
+/* hide scrollbar */
+.wrapper::-webkit-scrollbar{
+  display:none;
 }
 
 /* ================= ENTRY ================= */
@@ -74,16 +97,20 @@ body{
 .entry{
   position:absolute;
   text-align:center;
-  z-index:5;
+  z-index:10;
+
   transition:1s ease;
 }
 
 .gift{
-  font-size:78px;
-  animation:giftFloat 2.5s ease-in-out infinite;
+  font-size:82px;
+
+  animation:
+    floatGift 2.5s ease-in-out infinite,
+    glowGift 3s ease-in-out infinite;
 }
 
-@keyframes giftFloat{
+@keyframes floatGift{
   0%,100%{
     transform:translateY(0);
   }
@@ -92,11 +119,21 @@ body{
   }
 }
 
+@keyframes glowGift{
+  0%,100%{
+    filter:drop-shadow(0 0 10px rgba(255,255,255,0.1));
+  }
+  50%{
+    filter:drop-shadow(0 0 22px rgba(255,255,255,0.25));
+  }
+}
+
 .entry h1{
-  margin-top:12px;
+  margin-top:14px;
   font-size:15px;
   font-weight:500;
-  color:#eaeaea;
+  color:#ececec;
+  letter-spacing:0.5px;
 }
 
 .entry p{
@@ -109,41 +146,50 @@ body{
 
 .year{
   position:absolute;
-  font-size:120px;
+
+  font-size:130px;
   font-weight:700;
   letter-spacing:-5px;
+
   opacity:0;
   transform:scale(0.9);
+
   transition:1s ease;
+
+  text-shadow:0 0 40px rgba(255,255,255,0.15);
 }
 
 /* ================= PANEL ================= */
 
 .panel{
   display:none;
-  width:90%;
-  max-width:620px;
+
+  width:100%;
+  max-width:680px;
+
+  margin:auto;
 
   background:rgba(255,255,255,0.06);
+
   border:1px solid rgba(255,255,255,0.12);
 
-  backdrop-filter:blur(20px);
+  backdrop-filter:blur(22px);
 
-  border-radius:28px;
+  border-radius:32px;
 
   padding:28px;
 
-  animation:panelIn 1.4s ease forwards;
+  animation:panelIn 1.5s ease forwards;
 }
 
 @keyframes panelIn{
   from{
     opacity:0;
-    transform:translateY(20px);
+    transform:translateY(40px) scale(0.98);
   }
   to{
     opacity:1;
-    transform:translateY(0);
+    transform:translateY(0) scale(1);
   }
 }
 
@@ -151,61 +197,127 @@ body{
 
 .tag{
   display:inline-block;
-  padding:6px 12px;
+
+  padding:7px 14px;
+
   border-radius:999px;
+
   background:rgba(255,255,255,0.08);
-  color:#bbb;
+
+  color:#bdbdbd;
+
   font-size:11px;
-  margin-bottom:16px;
+
+  animation:pulse 3s infinite;
+}
+
+@keyframes pulse{
+  0%,100%{
+    opacity:0.7;
+  }
+  50%{
+    opacity:1;
+  }
 }
 
 .title{
-  font-size:30px;
+  margin-top:18px;
+
+  font-size:34px;
+  line-height:1.08;
   font-weight:700;
-  line-height:1.1;
+
+  animation:titleFloat 5s ease-in-out infinite;
+}
+
+@keyframes titleFloat{
+  0%,100%{
+    transform:translateY(0);
+  }
+  50%{
+    transform:translateY(-2px);
+  }
 }
 
 .sub{
-  margin-top:10px;
-  color:#9f9f9f;
+  margin-top:12px;
+  color:#a1a1a1;
   font-size:14px;
 }
 
 /* ================= NOTES ================= */
 
 .notes{
-  margin-top:26px;
+  margin-top:30px;
 }
 
 .section{
-  margin-bottom:22px;
+  margin-bottom:28px;
 }
 
 .section h2{
+  margin-bottom:14px;
   font-size:14px;
-  margin-bottom:12px;
-  color:#ffffff;
+  color:white;
 }
 
+/* ================= ITEMS ================= */
+
 .item{
-  padding:12px 14px;
-  margin-bottom:10px;
+  position:relative;
 
-  background:rgba(255,255,255,0.04);
-  border-radius:16px;
+  padding:14px 16px;
 
-  color:#d5d5d5;
+  margin-bottom:12px;
+
+  background:rgba(255,255,255,0.05);
+
+  border-radius:18px;
+
+  color:#d8d8d8;
   font-size:13px;
 
+  overflow:hidden;
+
   opacity:0;
-  transform:translateY(10px);
+  transform:translateY(18px);
 
   animation:slideUp 0.8s ease forwards;
 }
 
-.item:nth-child(2){ animation-delay:0.2s; }
-.item:nth-child(3){ animation-delay:0.4s; }
-.item:nth-child(4){ animation-delay:0.6s; }
+.item::before{
+  content:"";
+
+  position:absolute;
+  inset:0;
+
+  background:linear-gradient(
+    120deg,
+    transparent,
+    rgba(255,255,255,0.08),
+    transparent
+  );
+
+  transform:translateX(-100%);
+
+  animation:shine 5s infinite;
+}
+
+@keyframes shine{
+  to{
+    transform:translateX(120%);
+  }
+}
+
+.item:hover{
+  transform:scale(1.02);
+  transition:0.3s ease;
+}
+
+.item:nth-child(2){animation-delay:0.2s;}
+.item:nth-child(3){animation-delay:0.4s;}
+.item:nth-child(4){animation-delay:0.6s;}
+.item:nth-child(5){animation-delay:0.8s;}
 
 @keyframes slideUp{
   to{
@@ -217,7 +329,7 @@ body{
 /* ================= FOOTER ================= */
 
 .footer{
-  margin-top:30px;
+  margin-top:35px;
   text-align:center;
 }
 
@@ -228,10 +340,25 @@ body{
 }
 
 .quote{
-  margin-top:18px;
+  margin-top:20px;
+
   font-style:italic;
-  color:#9d9d9d;
+
+  color:#aaaaaa;
+
   font-size:13px;
+
+  animation:quoteGlow 4s ease-in-out infinite;
+}
+
+@keyframes quoteGlow{
+  0%,100%{
+    opacity:0.7;
+  }
+  50%{
+    opacity:1;
+    text-shadow:0 0 20px rgba(255,255,255,0.15);
+  }
 }
 
 .small{
@@ -242,10 +369,10 @@ body{
 
 /* ================= MOBILE ================= */
 
-@media(max-width:600px){
+@media(max-width:700px){
 
   .title{
-    font-size:24px;
+    font-size:26px;
   }
 
   .year{
@@ -263,18 +390,26 @@ body{
 
 <!-- particles -->
 <script>
-for(let i=0;i<40;i++){
+
+for(let i=0;i<60;i++){
 
   const p=document.createElement("div");
+
   p.classList.add("particle");
 
   p.style.left=Math.random()*100+"vw";
+
   p.style.animationDuration=(10+Math.random()*15)+"s";
+
   p.style.opacity=Math.random()*0.3;
 
   document.body.appendChild(p);
+
 }
+
 </script>
+
+<div class="wrapper">
 
 <!-- ENTRY -->
 <div class="entry" id="entry">
@@ -346,6 +481,10 @@ for(let i=0;i<40;i++){
         Too adorable to argue with
       </div>
 
+      <div class="item">
+        Side effects include overthinking
+      </div>
+
     </div>
 
   </div>
@@ -368,6 +507,8 @@ for(let i=0;i<40;i++){
 
 </div>
 
+</div>
+
 <script>
 
 const entry = document.getElementById("entry");
@@ -386,11 +527,11 @@ entry.addEventListener("click", ()=>{
     year.style.opacity="1";
     year.style.transform="scale(1)";
 
-    // MORPH
+    // MORPH TO 24
     setTimeout(()=>{
 
       year.style.opacity="0.2";
-      year.style.transform="scale(1.1)";
+      year.style.transform="scale(1.15)";
 
       setTimeout(()=>{
 
@@ -403,7 +544,7 @@ entry.addEventListener("click", ()=>{
 
     },1200);
 
-    // FINAL PANEL
+    // SHOW PANEL
     setTimeout(()=>{
 
       year.style.opacity="0";
@@ -411,11 +552,12 @@ entry.addEventListener("click", ()=>{
       setTimeout(()=>{
 
         year.style.display="none";
+
         panel.style.display="block";
 
       },500);
 
-    },2600);
+    },2800);
 
   },700);
 
